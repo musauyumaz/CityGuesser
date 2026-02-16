@@ -28,7 +28,7 @@ fun GameScreen(){
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Şehrim Nerede?",
+            text = "\uD83C\uDF06 Şehrim Nerede?",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold
         )
