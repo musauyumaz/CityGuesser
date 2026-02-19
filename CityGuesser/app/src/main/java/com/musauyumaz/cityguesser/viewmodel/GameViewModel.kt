@@ -1,5 +1,4 @@
 package com.musauyumaz.cityguesser.viewmodel
-
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,52 +9,48 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlin.math.round
 
-class GameViewModel(application: Application) : AndroidViewModel(application){
+class GameViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = CityRepository(application.applicationContext)
 
     private val _gameState = MutableStateFlow(GameState())
-    val gameState : StateFlow<GameState> = _gameState.asStateFlow()
+    val gameState: StateFlow<GameState> = _gameState.asStateFlow()
 
-    init {
-        startGame()
-    }
+    private var currentDifficulty: Difficulty = Difficulty.EASY
 
-    fun startGame(){
+    fun startGame(difficulty: Difficulty) {
+        currentDifficulty = difficulty
         viewModelScope.launch {
             try {
                 repository.initialize()
                 loadNextQuestion()
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 _gameState.value = _gameState.value.copy(
                     isLoading = false,
                     errorMessage = "Şehirler yüklenemedi: ${e.message}"
                 )
-
             }
         }
     }
 
-    fun loadNextQuestion(){
-        if(_gameState.value.round > 10){
+    private fun loadNextQuestion() {
+        if (_gameState.value.round > 10) {
             endGame()
             return
         }
 
-        val currentDifficulty = Difficulty.EASY
         val city = repository.getRandomCity(currentDifficulty)
 
-        if(city == null){
+        if (city == null) {
             _gameState.value = _gameState.value.copy(
                 isLoading = false,
-                errorMessage = "Hiç Şehir bulunamadı"
+                errorMessage = "Hiç şehir bulunamadı!"
             )
             return
         }
 
-        val options = repository.generateOptions(city,currentDifficulty)
+        val options = repository.generateOptions(city, currentDifficulty)
 
         _gameState.value = _gameState.value.copy(
             currentCity = city,
@@ -67,23 +62,24 @@ class GameViewModel(application: Application) : AndroidViewModel(application){
         )
     }
 
-    fun selectAnswer(selectedOption: String){
+    fun selectAnswer(selectedOption: String) {
         val currentState = _gameState.value
 
         if (currentState.selectedAnswer != null) return
 
         val isCorrect = selectedOption == currentState.correctAnswer
 
-        val newScore = if(isCorrect){
+        val newScore = if (isCorrect) {
             currentState.score + 10
-        }else{
+        } else {
             currentState.score
         }
 
-        val newCombo = if (isCorrect)
+        val newCombo = if (isCorrect) {
             currentState.comboCount + 1
-        else
+        } else {
             0
+        }
 
         _gameState.value = currentState.copy(
             selectedAnswer = selectedOption,
@@ -92,22 +88,21 @@ class GameViewModel(application: Application) : AndroidViewModel(application){
         )
     }
 
-    fun nextQuestion(){
+    fun nextQuestion() {
         _gameState.value = _gameState.value.copy(
             round = _gameState.value.round + 1
         )
-
         loadNextQuestion()
     }
 
-    private fun endGame(){
+    private fun endGame() {
         _gameState.value = _gameState.value.copy(
             isGameOver = true
         )
     }
 
-    fun restartGame(){
+    fun restartGame() {
         _gameState.value = GameState()
-        startGame()
+        startGame(currentDifficulty)
     }
 }
