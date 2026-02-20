@@ -2,10 +2,19 @@ package com.musauyumaz.cityguesser.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+// Gece teması renkleri
+val Purple80 = Color(0xFFFF6B35)    // Canlı turuncu
+val PurpleGrey80 = Color(0xFFFFA500)  // Açık turuncu
+val Pink80 = Color(0xFFFFD700)       // Altın sarı
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+// Gün teması renkleri
+val Purple40 = Color(0xFF004E89)     // Koyu mavi
+val PurpleGrey40 = Color(0xFF1982E8) // Temel mavi
+val Pink40 = Color(0xFF0ACDFF)       // Açık mavi
+
+// Ek renkler
+val BackgroundLight = Color(0xFFF5F7FA)  // Hafif gri-mavi
+val BackgroundDark = Color(0xFF0F1419)   // Koyu arka plan
+val SurfaceLight = Color(0xFFFFFFFF)     // Beyaz
+val SurfaceDark = Color(0xFF1A1F2E)      // Koyu gri
+
