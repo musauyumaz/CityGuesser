@@ -1,7 +1,10 @@
 package com.musauyumaz.cityguesser.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.musauyumaz.cityguesser.data.Difficulty
 import com.musauyumaz.cityguesser.data.GameState
 import com.musauyumaz.cityguesser.viewmodel.GameViewModel
 
@@ -30,7 +34,7 @@ fun GameScreen(viewModel: GameViewModel = androidx.lifecycle.viewmodel.compose.v
             )
             gameState.errorMessage != null -> ErrorScreen(
                 message = gameState.errorMessage ?: "Bilinmeyen hata",
-                onRetry = { viewModel.startGame() }
+                onRetry = { viewModel.startGame(Difficulty.EASY) }
             )
             else -> GameContent(
                 gameState = gameState,
@@ -44,13 +48,18 @@ fun GameScreen(viewModel: GameViewModel = androidx.lifecycle.viewmodel.compose.v
 @Composable
 fun LoadingScreen() {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        CircularProgressIndicator(modifier = Modifier.size(48.dp))
+        CircularProgressIndicator(
+            modifier = Modifier.size(48.dp),
+            color = MaterialTheme.colorScheme.primary
+        )
         Spacer(modifier = Modifier.height(16.dp))
-        Text("Yükleniyor...", style = MaterialTheme.typography.bodyLarge)
+        Text("Yükleniyor...", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onBackground)
     }
 }
 
@@ -59,16 +68,17 @@ fun ErrorScreen(message: String, onRetry: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text("❌ Hata", style = MaterialTheme.typography.headlineMedium)
+        Text("❌ Hata", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.error)
         Spacer(modifier = Modifier.height(16.dp))
-        Text(message, style = MaterialTheme.typography.bodyLarge)
+        Text(message, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onBackground)
         Spacer(modifier = Modifier.height(24.dp))
-        Button(onClick = onRetry) {
-            Text("Tekrar Dene")
+        Button(onClick = onRetry, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)) {
+            Text("Tekrar Dene", color = Color.White)
         }
     }
 }
@@ -82,7 +92,9 @@ fun GameContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp)
+            .verticalScroll(rememberScrollState())
     ) {
         ScoreHeader(
             score = gameState.score,
@@ -92,11 +104,15 @@ fun GameContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        TimerBar(timeLeft = gameState.timeLeft)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         CityImage(
             imageUrl = gameState.currentCity?.imageUrl ?: "",
             modifier = Modifier
                 .fillMaxWidth()
-                .height(300.dp)
+                .height(250.dp)
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -104,7 +120,8 @@ fun GameContent(
         Text(
             text = "Bu şehir hangisi?",
             style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -116,12 +133,16 @@ fun GameContent(
             onOptionClick = onAnswerSelected
         )
 
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.height(16.dp))
 
         if (gameState.selectedAnswer != null) {
             Button(
                 onClick = onNextQuestion,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = Color.White
+                )
             ) {
                 Text("Sonraki Soru")
             }
@@ -130,15 +151,51 @@ fun GameContent(
 }
 
 @Composable
+fun TimerBar(timeLeft: Int) {
+    val progress = timeLeft / 30f
+    val color = when {
+        timeLeft > 20 -> Color(0xFF4CAF50)
+        timeLeft > 10 -> Color(0xFFFFC107)
+        else -> Color(0xFFF44336)
+    }
+
+    Column {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text("⏱️ Süre", style = MaterialTheme.typography.bodyMedium)
+            Text("${timeLeft}s", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
+        }
+        Spacer(modifier = Modifier.height(4.dp))
+        LinearProgressIndicator(
+            progress = { progress },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(8.dp)
+                .clip(RoundedCornerShape(4.dp)),
+            color = color
+        )
+    }
+}
+
+@Composable
 fun ScoreHeader(score: Int, round: Int, combo: Int) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                color = MaterialTheme.colorScheme.primaryContainer,
+                shape = RoundedCornerShape(12.dp)
+            )
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Text("Skor: $score", style = MaterialTheme.typography.titleMedium)
-        Text("Soru: $round/10", style = MaterialTheme.typography.titleMedium)
+        Text("Skor: $score", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+        Text("Soru: $round/10", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
         if (combo > 1) {
-            Text("🔥 Combo: $combo", style = MaterialTheme.typography.titleMedium)
+            Text("🔥 $combo", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
         }
     }
 }
@@ -190,12 +247,23 @@ fun OptionButton(
         else -> MaterialTheme.colorScheme.surface
     }
 
+    val textColor = when {
+        isCorrect -> Color.White
+        isWrong -> Color.White
+        else -> MaterialTheme.colorScheme.onSurface
+    }
+
     Button(
         onClick = onClick,
-        modifier = Modifier.fillMaxWidth(),
-        colors = ButtonDefaults.buttonColors(containerColor = backgroundColor)
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = backgroundColor,
+            contentColor = textColor
+        )
     ) {
-        Text(text, modifier = Modifier.padding(8.dp))
+        Text(text, modifier = Modifier.padding(8.dp), fontWeight = FontWeight.Medium)
     }
 }
 

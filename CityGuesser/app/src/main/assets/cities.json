@@ -1,0 +1,123 @@
+[
+  {
+    "name": "Paris",
+    "country": "France",
+    "imageUrl": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=500",
+    "difficulty": "EASY"
+  },
+  {
+    "name": "Tokyo",
+    "country": "Japan",
+    "imageUrl": "https://images.unsplash.com/photo-1540959375944-7049f642e9cd?w=500",
+    "difficulty": "EASY"
+  },
+  {
+    "name": "New York",
+    "country": "USA",
+    "imageUrl": "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=500",
+    "difficulty": "EASY"
+  },
+  {
+    "name": "London",
+    "country": "UK",
+    "imageUrl": "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=500",
+    "difficulty": "EASY"
+  },
+  {
+    "name": "Rome",
+    "country": "Italy",
+    "imageUrl": "https://images.unsplash.com/photo-1552832860-cfb67165eaf0?w=500",
+    "difficulty": "EASY"
+  },
+  {
+    "name": "Barcelona",
+    "country": "Spain",
+    "imageUrl": "https://images.unsplash.com/photo-1562883714-0a9ec82eb68c?w=500",
+    "difficulty": "MEDIUM"
+  },
+  {
+    "name": "Amsterdam",
+    "country": "Netherlands",
+    "imageUrl": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=500",
+    "difficulty": "MEDIUM"
+  },
+  {
+    "name": "Prague",
+    "country": "Czech Republic",
+    "imageUrl": "https://images.unsplash.com/photo-1551632786-c3bab6f7e00b?w=500",
+    "difficulty": "MEDIUM"
+  },
+  {
+    "name": "Vienna",
+    "country": "Austria",
+    "imageUrl": "https://images.unsplash.com/photo-1516026474235-47103e0e0f33?w=500",
+    "difficulty": "MEDIUM"
+  },
+  {
+    "name": "Budapest",
+    "country": "Hungary",
+    "imageUrl": "https://images.unsplash.com/photo-1549137768-fbb668978df7?w=500",
+    "difficulty": "MEDIUM"
+  },
+  {
+    "name": "Istanbul",
+    "country": "Turkey",
+    "imageUrl": "https://images.unsplash.com/photo-1524678606370-a47ad25cb82a?w=500",
+    "difficulty": "MEDIUM"
+  },
+  {
+    "name": "Athens",
+    "country": "Greece",
+    "imageUrl": "https://images.unsplash.com/photo-1570945387943-7a88fb921ce9?w=500",
+    "difficulty": "MEDIUM"
+  },
+  {
+    "name": "Dubai",
+    "country": "UAE",
+    "imageUrl": "https://images.unsplash.com/photo-1512453259323-5db2c3ce5f4e?w=500",
+    "difficulty": "HARD"
+  },
+  {
+    "name": "Singapore",
+    "country": "Singapore",
+    "imageUrl": "https://images.unsplash.com/photo-1509235179434-742a01e8fc84?w=500",
+    "difficulty": "HARD"
+  },
+  {
+    "name": "Hong Kong",
+    "country": "Hong Kong",
+    "imageUrl": "https://images.unsplash.com/photo-1508700386778-46d87a4b4800?w=500",
+    "difficulty": "HARD"
+  },
+  {
+    "name": "Bangkok",
+    "country": "Thailand",
+    "imageUrl": "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=500",
+    "difficulty": "HARD"
+  },
+  {
+    "name": "Seoul",
+    "country": "South Korea",
+    "imageUrl": "https://images.unsplash.com/photo-1528127269029-b8c5a37e4f0f?w=500",
+    "difficulty": "HARD"
+  },
+  {
+    "name": "Cairo",
+    "country": "Egypt",
+    "imageUrl": "https://images.unsplash.com/photo-1549902891-5f2f62cd6b83?w=500",
+    "difficulty": "HARD"
+  },
+  {
+    "name": "Lagos",
+    "country": "Nigeria",
+    "imageUrl": "https://images.unsplash.com/photo-1542259009477-d625272157b7?w=500",
+    "difficulty": "HARD"
+  },
+  {
+    "name": "São Paulo",
+    "country": "Brazil",
+    "imageUrl": "https://images.unsplash.com/photo-1483729558449-99daa64e96e3?w=500",
+    "difficulty": "HARD"
+  }
+]
+

@@ -5,14 +5,19 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.Dispatcher
 
 class CityRepository(private val context : Context) {
 
     private var allCities : List<City> = emptyList()
 
     suspend fun initialize() = withContext(Dispatchers.IO){
-        allCities = loadCitiesFromJson()
+        try {
+            allCities = loadCitiesFromJson()
+            android.util.Log.d("CityRepository", "Initialize tamamlandı. Toplam şehir: ${allCities.size}")
+        } catch (e: Exception) {
+            android.util.Log.e("CityRepository", "Initialize hatası", e)
+            throw e
+        }
     }
 
     private fun loadCitiesFromJson() : List<City> {
@@ -22,12 +27,17 @@ class CityRepository(private val context : Context) {
                 .bufferedReader()
                 .use { it.readText() }
 
+            android.util.Log.d("CityRepository", "JSON yüklendi: ${jsonString.length} karakter")
+
             val gson = Gson()
 
             val listType = object : TypeToken<List<City>>(){}.type
 
-            gson.fromJson(jsonString,listType)
+            val cities = gson.fromJson(jsonString,listType) as List<City>
+            android.util.Log.d("CityRepository", "Şehir sayısı: ${cities.size}")
+            cities
         }catch (e: Exception){
+            android.util.Log.e("CityRepository", "JSON yükleme hatası", e)
             e.printStackTrace()
             emptyList()
         }
